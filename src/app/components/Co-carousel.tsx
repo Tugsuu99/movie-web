@@ -54,7 +54,7 @@ const PlayingNowCarousel = () => {
 
   return (
     <>
-      <section className="relative w-full h-150">
+      <section className="relative w-360 h-150">
         <Carousel
           plugins={[plugin.current]}
           onMouseEnter={plugin.current.stop}

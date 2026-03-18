@@ -10,7 +10,7 @@ type Props = {
 
 const MovieSection = ({ title, movies }: Props) => {
   return (
-    <section className="px-20 mt-12">
+    <section className="px-20 mt-12 w-360">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold">{title}</h2>

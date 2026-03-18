@@ -24,7 +24,7 @@ export const fetchFromPopularMoviesDB = async (category: string) => {
 
 export default function Home() {
   return (
-    <div className="bg-white max-w-360 w-360 min-h-screen ">
+    <div className="bg-white  min-h-screen flex flex-col items-center ">
       <Header />
 
       <PlayingNowCarousel />

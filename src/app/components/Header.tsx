@@ -57,8 +57,9 @@ export const Header = () => {
   return (
     <div className="w-360 h-14.75 flex items-center justify-center">
       <div className="h-9 w-7xl flex flex-row items-center justify-between">
-        <img className="w-23 h-5" src="/Logo.png" alt="" />
-
+        <button onClick={() => router.push("/")}>
+          <img className="w-23 h-5 cursor-pointer" src="/Logo.png" alt="logo" />
+        </button>
         <div className="w-122 h-9 flex gap-3">
           <div>
             <button

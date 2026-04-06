@@ -20,14 +20,25 @@ export default async function Page({
   params: Promise<{ movieId: string }>;
 }) {
   const { movieId } = await params;
-
   const movie = await getMovie(movieId);
 
   return (
-    <div className="flex flex-col items-center gap-5 h-auto">
+    <div className="min-h-screen bg-white flex flex-col">
       <Header />
-      <Selected movie={movie} /> {/* Credits fetched dynamically inside */}
-      <LikeMovie id={Number(movieId)} />
+
+      {/* Main content area */}
+      <main className="flex-grow w-full flex flex-col gap-8 md:gap-16 pb-20">
+        {/* The Movie Detail Hero Section */}
+        <section className="w-full">
+          <Selected movie={movie} />
+        </section>
+
+        {/* More Like This / Recommendations */}
+        <section className="max-w-7xl mx-auto w-full px-4 md:px-8">
+          <LikeMovie id={Number(movieId)} />
+        </section>
+      </main>
+
       <Footer />
     </div>
   );

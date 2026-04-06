@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Autoplay from "embla-carousel-autoplay";
+import { Play, X, Star } from "lucide-react"; // Using icons for a cleaner look
 
 import { fetchFromPopularMoviesDB } from "@/app/page";
 import { Movie } from "@/app/index";
@@ -17,22 +18,21 @@ import {
 
 const PlayingNowCarousel = () => {
   const [movies, setMovies] = React.useState<Movie[]>([]);
-  const plugin = React.useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true }),
-  );
-
   const [trailerKey, setTrailerKey] = React.useState<string | null>(null);
   const [open, setOpen] = React.useState(false);
 
+  const plugin = React.useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: true }),
+  );
+
   const handleWatchTrailer = async (movieId: number) => {
     const key = await getMovieTrailer(movieId);
-    setTrailerKey(key);
-    setOpen(true);
-
     if (!key) {
       alert("Trailer not available");
       return;
     }
+    setTrailerKey(key);
+    setOpen(true);
   };
 
   React.useEffect(() => {
@@ -40,97 +40,102 @@ const PlayingNowCarousel = () => {
       const data = await fetchFromPopularMoviesDB("now_playing");
       setMovies(data);
     };
-
     loadMovies();
   }, []);
 
   if (!movies.length) {
     return (
-      <section className="h-150 flex items-center justify-center">
-        <p className="text-white">Loading...</p>
+      <section className="h-[400px] md:h-[600px] flex items-center justify-center bg-black">
+        <div className="animate-pulse text-gray-400">
+          Loading blockbusters...
+        </div>
       </section>
     );
   }
 
   return (
     <>
-      <section className="relative w-360 h-150">
-        <Carousel
-          plugins={[plugin.current]}
-          onMouseEnter={plugin.current.stop}
-          onMouseLeave={plugin.current.reset}
-          className="w-full h-full"
-        >
-          <CarouselContent>
-            {movies.slice(0, 20).map((movie) => {
-              return (
-                <CarouselItem key={movie.id} className="relative h-150 group">
-                  {/* Background Image */}
-
+      <section className="relative w-full h-[450px] md:h-[600px] overflow-hidden">
+        <Carousel plugins={[plugin.current]} className="w-full h-full">
+          <CarouselContent className="ml-0">
+            {movies.slice(0, 10).map((movie) => (
+              <CarouselItem
+                key={movie.id}
+                className="relative p-0 h-[450px] md:h-[600px] basis-full"
+              >
+                {/* Background Image - responsive object-fit */}
+                <div className="absolute inset-0 -z-10">
                   <img
                     src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
                     alt={movie.title}
-                    className="absolute -z-10 object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover object-center md:object-[center_20%]"
                   />
+                  {/* Gradient Overlay: Darker at bottom for mobile readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent md:bg-black/50" />
+                </div>
 
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-black/60 transition-opacity duration-500 group-hover:bg-black/75" />
+                {/* Content Container */}
+                <div className="relative h-full max-w-7xl mx-auto px-6 md:px-12 flex items-end md:items-center pb-12 md:pb-0">
+                  <div className="text-white max-w-2xl space-y-3 md:space-y-5">
+                    <div className="inline-block px-3 py-1 rounded-full bg-red-600 text-[10px] md:text-xs font-bold uppercase tracking-widest">
+                      Now Playing
+                    </div>
 
-                  {/* Content */}
-                  <div className="relative max-w-6xl mx-auto px-8 h-full flex items-center">
-                    <div
-                      className="text-white max-w-xl
-                    translate-y-6 opacity-0
-                    group-hover:translate-y-0 group-hover:opacity-100
-                    transition-all duration-500"
-                    >
-                      <p className="text-sm mb-2">Now Playing</p>
+                    <h1 className="text-3xl md:text-6xl font-black leading-tight drop-shadow-lg">
+                      {movie.title}
+                    </h1>
 
-                      <h1 className="text-4xl font-bold mb-4">{movie.title}</h1>
+                    <p className="text-sm md:text-lg text-gray-200 line-clamp-2 md:line-clamp-3 max-w-lg font-light">
+                      {movie.overview}
+                    </p>
 
-                      <p className="text-sm mb-4 line-clamp-3">
-                        {movie.overview}
-                      </p>
-
-                      <div className="flex items-center gap-4">
-                        <span className="text-yellow-400">
-                          ⭐ {movie.vote_average.toFixed(1)}
+                    <div className="flex items-center gap-6">
+                      <div className="flex items-center gap-1.5">
+                        <Star
+                          className="text-yellow-400 fill-yellow-400"
+                          size={20}
+                        />
+                        <span className="font-bold md:text-xl">
+                          {movie.vote_average.toFixed(1)}
                         </span>
-
-                        <button
-                          onClick={() => handleWatchTrailer(movie.id)}
-                          className="bg-white text-black px-4 py-2 rounded-md font-medium
-                     flex items-center gap-2
-                     hover:bg-black hover:text-white
-                     transition-all duration-300
-                     hover:scale-105"
-                        >
-                          ▶ Watch Trailer
-                        </button>
                       </div>
+
+                      <button
+                        onClick={() => handleWatchTrailer(movie.id)}
+                        className="group flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-bold text-sm md:text-base hover:bg-red-600 hover:text-white transition-all active:scale-95"
+                      >
+                        <Play size={18} className="fill-current" />
+                        Watch Trailer
+                      </button>
                     </div>
                   </div>
-                </CarouselItem>
-              );
-            })}
+                </div>
+              </CarouselItem>
+            ))}
           </CarouselContent>
 
-          <CarouselPrevious />
-          <CarouselNext />
+          {/* Arrows - hidden on small mobile screens to prevent clutter */}
+          <div className="hidden sm:block">
+            <CarouselPrevious className="left-4 bg-white/20 border-none text-white hover:bg-white/40" />
+            <CarouselNext className="right-4 bg-white/20 border-none text-white hover:bg-white/40" />
+          </div>
         </Carousel>
       </section>
+
+      {/* Video Modal */}
       {open && trailerKey && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
-          <div className=" relative w-[80%] max-w-4xl">
-            <button
-              onClick={() => setOpen(false)}
-              className="absolute -top-10 right-0 text-white text-xl"
-            >
-              X
-            </button>
+        <div className="fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4">
+          <button
+            onClick={() => setOpen(false)}
+            className="absolute top-6 right-6 text-white hover:text-red-500 transition"
+          >
+            <X size={40} />
+          </button>
+          <div className="w-full max-w-5xl aspect-video shadow-2xl">
             <iframe
-              className="w-full aspect-video rounded-lg"
-              src={`https://www.youtube.com/embed/${trailerKey}`}
+              className="w-full h-full rounded-xl"
+              src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`}
+              allow="autoplay; encrypted-media"
               allowFullScreen
             />
           </div>

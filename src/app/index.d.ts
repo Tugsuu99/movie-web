@@ -8,6 +8,7 @@ export type Movie = {
   backdrop_path: string;
   original_title: string;
   title: string;
+  runtime?: number;
   genres: {
     id: number;
     name: string;

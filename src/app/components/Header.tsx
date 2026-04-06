@@ -50,10 +50,6 @@ export const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200">
-      {/* Main Container: 
-          flex-row-reverse on mobile (Logo right, Buttons left)
-          flex-row on desktop (Logo left, Search center, Buttons right)
-      */}
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between flex-row-reverse md:flex-row gap-4">
         {/* LOGO */}
         <button onClick={() => router.push("/")} className="shrink-0">

@@ -13,9 +13,7 @@ import {
 export const Footer = () => {
   return (
     <footer className="w-full bg-[#4338CA] text-white pt-12 pb-8 px-6 md:px-12">
-      {/* Container to match your Header and Content width */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-20">
-        {/* SECTION 1: LOGO & COPYRIGHT */}
         <div className="flex flex-col gap-4">
           <img className="w-24 h-auto" src="Logo.png" alt="Movie Z Logo" />
           <p className="text-sm opacity-80">
@@ -23,7 +21,6 @@ export const Footer = () => {
           </p>
         </div>
 
-        {/* SECTION 2: CONTACT INFORMATION */}
         <div className="flex flex-col gap-4">
           <h3 className="font-bold text-lg">Contact Information</h3>
 

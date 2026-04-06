@@ -9,7 +9,6 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
   const router = useRouter();
 
   return (
-    // Changed w-45 to a responsive width: 150px on mobile, 180px on desktop
     <div
       onClick={() => router.push(`/about/${movie.id}`)}
       className="w-[150px] md:w-[180px] shrink-0 cursor-pointer group"
